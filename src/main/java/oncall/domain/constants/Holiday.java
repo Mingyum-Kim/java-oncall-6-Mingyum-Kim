@@ -18,6 +18,9 @@ public enum Holiday {
         this.day = day;
     }
 
+    /**
+     * 입력한 월, 일이 법정 공휴일에 해당되는 지 확인하는 메서드
+     */
     public static boolean isHoliday(Month month, int day) {
         for (Holiday holiday : Holiday.values()) {
             if (holiday.month.equals(month) && holiday.day == day) {

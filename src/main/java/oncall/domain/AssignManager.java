@@ -14,6 +14,11 @@ public class AssignManager {
         this.weekend = weekend;
     }
 
+    /**
+     * 모든 날짜를 순회하며 평일, 휴일 순번의 비상 근무표를 배정하는 메서드
+     *
+     * @return 1일부터 마지막 날까지 근무를 담당하는 근무자들의 목록
+     */
     public Workers assign(Month month, DayOfWeek startDayOfWeek) {
         Workers result = new Workers();
         for (int day = 1; day <= month.getDays(); day++) {
@@ -45,14 +50,14 @@ public class AssignManager {
         addFirstWorker(result, workers);
     }
 
-    private boolean isEqualsWithLastWorker(Workers result, Workers workers) {
-        return result.getBack().equals(workers.getFront());
-    }
-
     private void addFirstWorker(Workers result, Workers workers) {
         Worker worker = workers.popFront();
         result.addBack(worker);
         workers.addBack(worker);
+    }
+
+    private boolean isEqualsWithLastWorker(Workers result, Workers workers) {
+        return result.getBack().equals(workers.getFront());
     }
 
     /**
