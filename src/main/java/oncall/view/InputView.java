@@ -3,7 +3,7 @@ package oncall.view;
 import java.util.Arrays;
 import java.util.List;
 import oncall.controller.dto.MonthAndStartDayOfWeek;
-import oncall.controller.dto.WorkerInfo;
+import oncall.controller.dto.WorkersName;
 import oncall.exception.CustomException;
 import oncall.exception.ErrorMessage;
 import oncall.view.console.ConsoleReader;
@@ -17,12 +17,12 @@ public class InputView {
         );
     }
 
-    public WorkerInfo readWorkerInfo() {
+    public WorkersName readWorkerInfo() {
         ConsoleWriter.printMessage("평일 비상 근무 순번대로 사원 닉네임을 입력하세요> ");
         List<String> weekday = Validator.validateWorkers(ConsoleReader.enterMessage());
         ConsoleWriter.printMessage("휴일 비상 근무 순번대로 사원 닉네임을 입력하세요> ");
         List<String> weekend = Validator.validateWorkers(ConsoleReader.enterMessage());
-        return new WorkerInfo(
+        return new WorkersName(
                 weekday,
                 weekend
         );
@@ -84,6 +84,7 @@ public class InputView {
         public static List<String> validateWorkers(String message) {
             List<String> names = parseStringToListWithoutLimit(message, ",");
             validateDuplicatedItem(names);
+            validateRange(names.size(), 5, 35);
             return names;
         }
 

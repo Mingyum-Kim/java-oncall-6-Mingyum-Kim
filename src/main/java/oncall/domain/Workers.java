@@ -2,6 +2,9 @@ package oncall.domain;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.List;
+import oncall.exception.CustomException;
+import oncall.exception.ErrorMessage;
 
 public class Workers {
     private Deque<String> workers;
@@ -10,8 +13,14 @@ public class Workers {
         this.workers = new ArrayDeque<>();
     }
 
-    public Workers(Deque<String> workers) {
+    private Workers(Deque<String> workers) {
         this.workers = workers;
+    }
+
+    public static Workers from(List<String> workers) {
+        Validator.validate(workers);
+        Deque<String> deque = new ArrayDeque<>(workers);
+        return new Workers(deque);
     }
 
     /**
@@ -51,5 +60,24 @@ public class Workers {
 
     public boolean isEmpty() {
         return workers.isEmpty();
+    }
+
+    private static class Validator {
+        private static void validate(List<String> workers) {
+            for (String worker : workers) {
+                validateLength(worker, 1, 5);
+            }
+        }
+
+        public static void validateLength(String name, int start, int end) {
+            if (isInvalidRange(name, start, end)) {
+                throw CustomException.from(ErrorMessage.INVALID_INPUT_ERROR);
+            }
+        }
+
+        private static boolean isInvalidRange(String name, int start, int end) {
+            int length = name.length();
+            return length < start || length > end;
+        }
     }
 }
