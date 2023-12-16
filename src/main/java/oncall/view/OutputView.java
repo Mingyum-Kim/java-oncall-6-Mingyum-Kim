@@ -13,7 +13,7 @@ import oncall.view.console.ConsoleWriter;
 public class OutputView {
     public void printResult(Month month, DayOfWeek startDayOfWeek, Workers result) {
         for (int day = 1; day <= month.getDays(); day++) {
-            String worker = result.popFront();
+            String worker = result.popFront().getName();
             List<String> resultMessages = List.of(
                     month.getMonth() + "월",
                     day + "일",

@@ -37,7 +37,7 @@ public class AssignManager {
             return;
         }
         if (isEqualsWithLastWorker(result, workers)) {
-            String holding = workers.popFront();
+            Worker holding = workers.popFront();
             addFirstWorker(result, workers);
             workers.addFront(holding);
             return;
@@ -50,7 +50,7 @@ public class AssignManager {
     }
 
     private void addFirstWorker(Workers result, Workers workers) {
-        String worker = workers.popFront();
+        Worker worker = workers.popFront();
         result.addBack(worker);
         workers.addBack(worker);
     }
