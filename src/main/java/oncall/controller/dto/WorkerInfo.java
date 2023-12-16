@@ -1,9 +1,9 @@
 package oncall.controller.dto;
 
-import oncall.domain.Workers;
+import java.util.List;
 
 public record WorkerInfo(
-        Workers weekday,
-        Workers weekend
+        List<String> weekday,
+        List<String> weekend
 ) {
 }

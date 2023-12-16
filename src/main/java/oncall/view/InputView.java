@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 import oncall.controller.dto.MonthAndStartDayOfWeek;
 import oncall.controller.dto.WorkerInfo;
-import oncall.domain.Workers;
 import oncall.exception.CustomException;
 import oncall.exception.ErrorMessage;
 import oncall.view.console.ConsoleReader;
@@ -20,9 +19,9 @@ public class InputView {
 
     public WorkerInfo readWorkerInfo() {
         ConsoleWriter.printMessage("평일 비상 근무 순번대로 사원 닉네임을 입력하세요> ");
-        Workers weekday = Validator.validateWorkers(ConsoleReader.enterMessage());
+        List<String> weekday = Validator.validateWorkers(ConsoleReader.enterMessage());
         ConsoleWriter.printMessage("휴일 비상 근무 순번대로 사원 닉네임을 입력하세요> ");
-        Workers weekend = Validator.validateWorkers(ConsoleReader.enterMessage());
+        List<String> weekend = Validator.validateWorkers(ConsoleReader.enterMessage());
         return new WorkerInfo(
                 weekday,
                 weekend
@@ -82,8 +81,34 @@ public class InputView {
             return number < start || number > end;
         }
 
-        public static Workers validateWorkers(String message) {
-            
+        public static List<String> validateWorkers(String message) {
+            List<String> names = parseStringToListWithoutLimit(message, ",");
+            validateDuplicatedItem(names);
+            return names;
+        }
+
+        private static List<String> parseStringToListWithoutLimit(String message, String separator) {
+            return Arrays.stream(splitWithoutLimit(message, separator)).toList();
+        }
+
+        private static String[] splitWithoutLimit(String message, String separator) {
+            return message.split(separator);
+        }
+
+        private static void validateDuplicatedItem(List<String> items) {
+            if (hasDuplicatedItem(items)) {
+                throw CustomException.from(ErrorMessage.INVALID_INPUT_ERROR);
+            }
+        }
+
+        private static boolean hasDuplicatedItem(List<String> items) {
+            return items.size() != calculateUniqueItemsCount(items);
+        }
+
+        private static int calculateUniqueItemsCount(List<String> items) {
+            return (int) items.stream()
+                    .distinct()
+                    .count();
         }
     }
 }
