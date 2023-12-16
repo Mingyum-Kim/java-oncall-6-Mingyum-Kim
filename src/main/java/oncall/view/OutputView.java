@@ -11,19 +11,26 @@ import oncall.domain.constants.Month;
 import oncall.view.console.ConsoleWriter;
 
 public class OutputView {
+    private static final String MONTH = "월";
+    private static final String DAY = "일";
+
     public void printResult(Month month, DayOfWeek startDayOfWeek, Workers result) {
         for (int day = 1; day <= month.getDays(); day++) {
             String worker = result.popFront().getName();
-            List<String> resultMessages = List.of(
-                    month.getMonth() + "월",
-                    day + "일",
-                    getDayOfWeek(month, day, startDayOfWeek),
-                    worker
-            );
+            List<String> resultMessages = getResultMessages(month, startDayOfWeek, day, worker);
             ConsoleWriter.printlnMessage(
                     String.join(" ", resultMessages)
             );
         }
+    }
+
+    private List<String> getResultMessages(Month month, DayOfWeek startDayOfWeek, int day, String worker) {
+        return List.of(
+                month.getMonth() + MONTH,
+                day + DAY,
+                getDayOfWeek(month, day, startDayOfWeek),
+                worker
+        );
     }
 
     private String getDayOfWeek(Month month, int day, DayOfWeek startDayOfWeek) {
