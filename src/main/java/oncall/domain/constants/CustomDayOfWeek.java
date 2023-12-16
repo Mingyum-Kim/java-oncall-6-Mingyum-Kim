@@ -1,15 +1,18 @@
 package oncall.domain.constants;
 
 import java.time.DayOfWeek;
+import java.util.Arrays;
+import oncall.exception.CustomException;
+import oncall.exception.ErrorMessage;
 
 public enum CustomDayOfWeek {
-    MONDAY(false, "월요일"),
-    TUESDAY(false, "화요일"),
-    WEDNESDAY(false, "수요일"),
-    THURSDAY(false, "목요일"),
-    FRIDAY(false, "금요일"),
-    SATURDAY(true, "토요일"),
-    SUNDAY(true, "일요일");
+    MONDAY(false, "월"),
+    TUESDAY(false, "화"),
+    WEDNESDAY(false, "수"),
+    THURSDAY(false, "목"),
+    FRIDAY(false, "금"),
+    SATURDAY(true, "토"),
+    SUNDAY(true, "일");
 
     private final boolean isWeekend;
     private final String name;
@@ -17,6 +20,13 @@ public enum CustomDayOfWeek {
     CustomDayOfWeek(boolean isWeekend, String name) {
         this.isWeekend = isWeekend;
         this.name = name;
+    }
+
+    public static CustomDayOfWeek from(String name) {
+        return Arrays.stream(CustomDayOfWeek.values())
+                .filter(element -> element.name.equals(name))
+                .findFirst()
+                .orElseThrow(() -> CustomException.from(ErrorMessage.INVALID_INPUT_ERROR));
     }
 
     public static boolean isWeekend(DayOfWeek dayOfWeek) {

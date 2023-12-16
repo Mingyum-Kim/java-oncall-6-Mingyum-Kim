@@ -30,7 +30,7 @@ public enum Month {
         return Arrays.stream(Month.values())
                 .filter(element -> element.month == month)
                 .findFirst()
-                .orElseThrow(() -> CustomException.from(ErrorMessage.INVALID_MONTH_ERROR));
+                .orElseThrow(() -> CustomException.from(ErrorMessage.INVALID_INPUT_ERROR));
     }
 
     public int getMonth() {
