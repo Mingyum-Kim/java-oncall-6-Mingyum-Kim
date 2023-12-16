@@ -17,40 +17,39 @@ public class AssignManager {
     public Workers assign(Month month, DayOfWeek startDayOfWeek) {
         Workers result = new Workers();
         for (int day = 1; day <= month.getDays(); day++) {
-            DayOfWeek dayOfWeek = startDayOfWeek.plus(day - 1); // 현재 요일
-
-            // 평일인 경우
+            DayOfWeek dayOfWeek = getCurrentDayOfWeek(startDayOfWeek, day);
             if (isWeekday(month, day, dayOfWeek)) {
-                // 평일 근무자를 배치한다.
                 add(result, weekday);
+                continue;
             }
-
-            // 주말 혹은 법정 공휴일인 경우
-            if (!isWeekday(month, day, dayOfWeek)) {
-                // 휴일 근무자를 배치한다.
-                add(result, weekend);
-            }
+            add(result, weekend);
         }
         return result;
     }
 
+    private DayOfWeek getCurrentDayOfWeek(DayOfWeek startDayOfWeek, int day) {
+        return startDayOfWeek.plus(day - 1);
+    }
+
     private void add(Workers result, Workers workers) {
         if (result.isEmpty()) {
-            String worker = workers.popFront();
-            result.addBack(worker);
-            workers.addBack(worker);
+            addFirstWorker(result, workers);
             return;
         }
-
-        if (result.getBack().equals(workers.getFront())) {
+        if (isEqualsWithLastWorker(result, workers)) {
             String holding = workers.popFront();
-            String worker = workers.popFront();
-            result.addBack(worker);
-            workers.addBack(worker);
+            addFirstWorker(result, workers);
             workers.addFront(holding);
             return;
         }
+        addFirstWorker(result, workers);
+    }
 
+    private boolean isEqualsWithLastWorker(Workers result, Workers workers) {
+        return result.getBack().equals(workers.getFront());
+    }
+
+    private void addFirstWorker(Workers result, Workers workers) {
         String worker = workers.popFront();
         result.addBack(worker);
         workers.addBack(worker);

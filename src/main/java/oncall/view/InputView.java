@@ -55,9 +55,7 @@ public class InputView {
         }
 
         private static int validateMonth(String message) {
-            int month = validateNumber(message, ErrorMessage.INVALID_INPUT_ERROR);
-            validateRange(month, 1, 12);
-            return month;
+            return validateNumber(message, ErrorMessage.INVALID_INPUT_ERROR);
         }
 
         public static int validateNumber(String message, ErrorMessage errorMessage) {
@@ -71,21 +69,8 @@ public class InputView {
             return !str.matches("\\d+");
         }
 
-        public static void validateRange(int number, int start, int end) {
-            if (isInvalidRange(number, start, end)) {
-                throw CustomException.from(ErrorMessage.INVALID_INPUT_ERROR);
-            }
-        }
-
-        private static boolean isInvalidRange(int number, int start, int end) {
-            return number < start || number > end;
-        }
-
         public static List<String> validateWorkers(String message) {
-            List<String> names = parseStringToListWithoutLimit(message, ",");
-            validateDuplicatedItem(names);
-            validateRange(names.size(), 5, 35);
-            return names;
+            return parseStringToListWithoutLimit(message, ",");
         }
 
         private static List<String> parseStringToListWithoutLimit(String message, String separator) {
@@ -94,22 +79,6 @@ public class InputView {
 
         private static String[] splitWithoutLimit(String message, String separator) {
             return message.split(separator);
-        }
-
-        private static void validateDuplicatedItem(List<String> items) {
-            if (hasDuplicatedItem(items)) {
-                throw CustomException.from(ErrorMessage.INVALID_INPUT_ERROR);
-            }
-        }
-
-        private static boolean hasDuplicatedItem(List<String> items) {
-            return items.size() != calculateUniqueItemsCount(items);
-        }
-
-        private static int calculateUniqueItemsCount(List<String> items) {
-            return (int) items.stream()
-                    .distinct()
-                    .count();
         }
     }
 }
