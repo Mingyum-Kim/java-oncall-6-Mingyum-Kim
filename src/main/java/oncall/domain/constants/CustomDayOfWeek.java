@@ -37,4 +37,13 @@ public enum CustomDayOfWeek {
         }
         throw new IllegalStateException("요일이 올바르지 않습니다.");
     }
+
+    public DayOfWeek toDayOfWeek() {
+        for (DayOfWeek dayOfWeek : DayOfWeek.values()) {
+            if (dayOfWeek.name().equals(name())) {
+                return DayOfWeek.valueOf(name());
+            }
+        }
+        throw new IllegalStateException("요일이 올바르지 않습니다.");
+    }
 }
