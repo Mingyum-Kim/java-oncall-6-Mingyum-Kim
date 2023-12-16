@@ -22,6 +22,11 @@ public enum CustomDayOfWeek {
         this.name = name;
     }
 
+    /**
+     * 요일 이름을 CustomDayOfWeek 객체로 변경하는 메서드
+     *
+     * @param name "월", "화" 등의 요일 이름
+     */
     public static CustomDayOfWeek from(String name) {
         return Arrays.stream(CustomDayOfWeek.values())
                 .filter(element -> element.name.equals(name))
@@ -29,6 +34,12 @@ public enum CustomDayOfWeek {
                 .orElseThrow(() -> CustomException.from(ErrorMessage.INVALID_INPUT_ERROR));
     }
 
+    /**
+     * 입력된 요일이 주말인지 확인하는 메서드
+     *
+     * @param dayOfWeek 요일
+     * @return 입력된 요일이 주말이면 true, 아니면 false
+     */
     public static boolean isWeekend(DayOfWeek dayOfWeek) {
         for (CustomDayOfWeek customDayOfWeek : CustomDayOfWeek.values()) {
             if (customDayOfWeek.name().equals(dayOfWeek.name())) {
@@ -38,6 +49,9 @@ public enum CustomDayOfWeek {
         throw new IllegalStateException("요일이 올바르지 않습니다.");
     }
 
+    /**
+     * CustomDayOfWeek 객체를 java.time.DayOfWeek 객체로 변경하는 메서드
+     */
     public DayOfWeek toDayOfWeek() {
         for (DayOfWeek dayOfWeek : DayOfWeek.values()) {
             if (dayOfWeek.name().equals(name())) {
