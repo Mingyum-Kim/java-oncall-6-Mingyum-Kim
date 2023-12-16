@@ -70,7 +70,9 @@ public class InputView {
         }
 
         public static List<String> validateWorkers(String message) {
-            return parseStringToListWithoutLimit(message, ",");
+            List<String> names = parseStringToListWithoutLimit(message, ",");
+            validateDuplicatedItem(names);
+            return names;
         }
 
         private static List<String> parseStringToListWithoutLimit(String message, String separator) {
@@ -79,6 +81,22 @@ public class InputView {
 
         private static String[] splitWithoutLimit(String message, String separator) {
             return message.split(separator);
+        }
+
+        private static void validateDuplicatedItem(List<String> items) {
+            if (hasDuplicatedItem(items)) {
+                throw CustomException.from(ErrorMessage.INVALID_INPUT_ERROR);
+            }
+        }
+
+        private static boolean hasDuplicatedItem(List<String> items) {
+            return items.size() != calculateUniqueItemsCount(items);
+        }
+
+        private static int calculateUniqueItemsCount(List<String> items) {
+            return (int) items.stream()
+                    .distinct()
+                    .count();
         }
     }
 }
