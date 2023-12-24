@@ -29,6 +29,11 @@ public class Workers {
         source.addBack(front);
     }
 
+    public boolean equalsWithLastWorker(Workers source) {
+        Worker back = workers.getLast();
+        return back.equals(source.getFront());
+    }
+
     /**
      * 제일 앞에 있는 요소를 반환하는 메서드
      */

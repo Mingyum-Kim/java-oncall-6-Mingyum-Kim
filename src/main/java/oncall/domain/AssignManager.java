@@ -41,17 +41,13 @@ public class AssignManager {
             result.addFirstWorker(workers);
             return;
         }
-        if (isEqualsWithLastWorker(result, workers)) {
+        if (result.equalsWithLastWorker(workers)) {
             Worker holding = workers.popFront();
             result.addFirstWorker(workers);
             workers.addFront(holding);
             return;
         }
         result.addFirstWorker(workers);
-    }
-
-    private boolean isEqualsWithLastWorker(Workers result, Workers workers) {
-        return result.getBack().equals(workers.getFront());
     }
 
     /**
