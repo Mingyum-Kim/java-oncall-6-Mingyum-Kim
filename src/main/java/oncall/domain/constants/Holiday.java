@@ -1,5 +1,7 @@
 package oncall.domain.constants;
 
+import java.util.Arrays;
+
 public enum Holiday {
     NEW_YEAR(Month.JANUARY, 1),
     INDEPENDENCE_MOVEMENT_DAY(Month.MARCH, 1),
@@ -22,11 +24,7 @@ public enum Holiday {
      * 입력한 월, 일이 법정 공휴일에 해당되는 지 확인하는 메서드
      */
     public static boolean isHoliday(Month month, int day) {
-        for (Holiday holiday : Holiday.values()) {
-            if (holiday.month.equals(month) && holiday.day == day) {
-                return true;
-            }
-        }
-        return false;
+        return Arrays.stream(values())
+                .anyMatch(holiday -> holiday.month.equals(month) && holiday.day == day);
     }
 }
