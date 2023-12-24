@@ -1,13 +1,13 @@
 package oncall.view;
 
 import java.time.DayOfWeek;
+import java.time.Month;
 import java.time.format.TextStyle;
 import java.util.List;
 import java.util.Locale;
 import oncall.domain.Workers;
 import oncall.domain.constants.CustomDayOfWeek;
 import oncall.domain.constants.Holiday;
-import oncall.domain.constants.Month;
 import oncall.view.console.ConsoleWriter;
 
 public class OutputView {
@@ -15,7 +15,7 @@ public class OutputView {
     private static final String DAY = "일";
 
     public void printResult(Month month, DayOfWeek startDayOfWeek, Workers result) {
-        for (int day = 1; day <= month.getDays(); day++) {
+        for (int day = 1; day <= month.minLength(); day++) {
             String worker = result.popFront().getName();
             List<String> resultMessages = getResultMessages(month, startDayOfWeek, day, worker);
             ConsoleWriter.printlnMessage(
@@ -26,7 +26,7 @@ public class OutputView {
 
     private List<String> getResultMessages(Month month, DayOfWeek startDayOfWeek, int day, String worker) {
         return List.of(
-                month.getMonth() + MONTH,
+                month.getValue() + MONTH,
                 day + DAY,
                 getDayOfWeek(month, day, startDayOfWeek),
                 worker

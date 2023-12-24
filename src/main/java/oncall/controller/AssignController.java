@@ -1,5 +1,7 @@
 package oncall.controller;
 
+import java.time.DateTimeException;
+import java.time.Month;
 import java.util.function.Supplier;
 import oncall.controller.dto.DateInfo;
 import oncall.controller.dto.MonthAndStartDayOfWeek;
@@ -8,7 +10,8 @@ import oncall.controller.dto.WorkersName;
 import oncall.domain.AssignManager;
 import oncall.domain.Workers;
 import oncall.domain.constants.CustomDayOfWeek;
-import oncall.domain.constants.Month;
+import oncall.exception.CustomException;
+import oncall.exception.ErrorMessage;
 import oncall.view.InputView;
 import oncall.view.OutputView;
 import oncall.view.console.ConsoleWriter;
@@ -40,10 +43,18 @@ public class AssignController {
     private DateInfo getDateInfo() {
         return retry(() -> {
             MonthAndStartDayOfWeek monthAndStartDayOfWeek = inputView.readMonthAndStartDayOfWeek();
-            Month month = Month.from(monthAndStartDayOfWeek.month());
+            Month month = getMonth(monthAndStartDayOfWeek.month());
             CustomDayOfWeek dayOfWeek = CustomDayOfWeek.from(monthAndStartDayOfWeek.startDayOfWeek());
             return new DateInfo(month, dayOfWeek);
         });
+    }
+
+    private Month getMonth(int month) {
+        try {
+            return Month.of(month);
+        } catch (DateTimeException e) {
+            throw CustomException.from(ErrorMessage.INVALID_INPUT_ERROR);
+        }
     }
 
     private WorkersInfo getWorkersInfo() {

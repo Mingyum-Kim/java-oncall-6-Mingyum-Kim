@@ -1,9 +1,9 @@
 package oncall.domain;
 
 import java.time.DayOfWeek;
+import java.time.Month;
 import oncall.domain.constants.CustomDayOfWeek;
 import oncall.domain.constants.Holiday;
-import oncall.domain.constants.Month;
 
 public class AssignManager {
     private Workers weekday;
@@ -21,7 +21,7 @@ public class AssignManager {
      */
     public Workers assign(Month month, DayOfWeek startDayOfWeek) {
         Workers result = new Workers();
-        for (int day = 1; day <= month.getDays(); day++) {
+        for (int day = 1; day <= month.minLength(); day++) {
             DayOfWeek dayOfWeek = getCurrentDayOfWeek(startDayOfWeek, day);
             if (isWeekday(month, day, dayOfWeek)) {
                 add(result, weekday);
