@@ -26,8 +26,8 @@ public class AssignController {
     }
 
     public void run() {
-        DateInfo dateInfo = getDateInfo();
-        WorkersInfo workersInfo = getWorkersInfo();
+        DateInfo dateInfo = retry(this::getDateInfo);
+        WorkersInfo workersInfo = retry(this::getWorkersInfo);
 
         AssignManager assignManager = new AssignManager(
                 workersInfo.weekday(),
@@ -40,15 +40,6 @@ public class AssignController {
         outputView.printResult(dateInfo.month(), dateInfo.startDayOfWeek().toDayOfWeek(), result);
     }
 
-    private DateInfo getDateInfo() {
-        return retry(() -> {
-            MonthAndStartDayOfWeek monthAndStartDayOfWeek = inputView.readMonthAndStartDayOfWeek();
-            Month month = getMonth(monthAndStartDayOfWeek.month());
-            CustomDayOfWeek dayOfWeek = CustomDayOfWeek.from(monthAndStartDayOfWeek.startDayOfWeek());
-            return new DateInfo(month, dayOfWeek);
-        });
-    }
-
     private Month getMonth(int month) {
         try {
             return Month.of(month);
@@ -57,14 +48,19 @@ public class AssignController {
         }
     }
 
+    private DateInfo getDateInfo() {
+        MonthAndStartDayOfWeek monthAndStartDayOfWeek = inputView.readMonthAndStartDayOfWeek();
+        Month month = getMonth(monthAndStartDayOfWeek.month());
+        CustomDayOfWeek dayOfWeek = CustomDayOfWeek.from(monthAndStartDayOfWeek.startDayOfWeek());
+        return new DateInfo(month, dayOfWeek);
+    }
+
     private WorkersInfo getWorkersInfo() {
-        return retry(() -> {
-            WorkersName workersName = inputView.readWorkerInfo();
-            return new WorkersInfo(
-                    Workers.from(workersName.weekday()),
-                    Workers.from(workersName.weekend())
-            );
-        });
+        WorkersName workersName = inputView.readWorkerInfo();
+        return new WorkersInfo(
+                Workers.from(workersName.weekday()),
+                Workers.from(workersName.weekend())
+        );
     }
 
     private static <T> T retry(Supplier<T> supplier) {
