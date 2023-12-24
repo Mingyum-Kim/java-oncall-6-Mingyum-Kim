@@ -2,11 +2,11 @@ package oncall.controller;
 
 import java.time.DateTimeException;
 import java.time.Month;
+import java.util.List;
 import java.util.function.Supplier;
 import oncall.controller.dto.DateInfo;
 import oncall.controller.dto.MonthAndStartDayOfWeek;
 import oncall.controller.dto.WorkersInfo;
-import oncall.controller.dto.WorkersName;
 import oncall.domain.AssignManager;
 import oncall.domain.Workers;
 import oncall.domain.constants.CustomDayOfWeek;
@@ -56,10 +56,11 @@ public class AssignController {
     }
 
     private WorkersInfo getWorkersInfo() {
-        WorkersName workersName = inputView.readWorkerInfo();
+        List<String> weekday = inputView.readWeekdayWorkers();
+        List<String> weekend = inputView.readWeekendWorkers();
         return new WorkersInfo(
-                Workers.from(workersName.weekday()),
-                Workers.from(workersName.weekend())
+                Workers.from(weekday),
+                Workers.from(weekend)
         );
     }
 

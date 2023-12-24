@@ -3,7 +3,6 @@ package oncall.view;
 import java.util.Arrays;
 import java.util.List;
 import oncall.controller.dto.MonthAndStartDayOfWeek;
-import oncall.controller.dto.WorkersName;
 import oncall.exception.CustomException;
 import oncall.exception.ErrorMessage;
 import oncall.view.console.ConsoleReader;
@@ -17,14 +16,17 @@ public class InputView {
         );
     }
 
-    public WorkersName readWorkerInfo() {
+    public List<String> readWeekdayWorkers() {
         ConsoleWriter.printMessage("평일 비상 근무 순번대로 사원 닉네임을 입력하세요> ");
-        List<String> weekday = Validator.validateWorkers(ConsoleReader.enterMessage());
+        return Validator.validateWorkers(
+                ConsoleReader.enterMessage()
+        );
+    }
+
+    public List<String> readWeekendWorkers() {
         ConsoleWriter.printMessage("휴일 비상 근무 순번대로 사원 닉네임을 입력하세요> ");
-        List<String> weekend = Validator.validateWorkers(ConsoleReader.enterMessage());
-        return new WorkersName(
-                weekday,
-                weekend
+        return Validator.validateWorkers(
+                ConsoleReader.enterMessage()
         );
     }
 
