@@ -38,22 +38,16 @@ public class AssignManager {
 
     private void add(Workers result, Workers workers) {
         if (result.isEmpty()) {
-            addFirstWorker(result, workers);
+            result.addFirstWorker(workers);
             return;
         }
         if (isEqualsWithLastWorker(result, workers)) {
             Worker holding = workers.popFront();
-            addFirstWorker(result, workers);
+            result.addFirstWorker(workers);
             workers.addFront(holding);
             return;
         }
-        addFirstWorker(result, workers);
-    }
-
-    private void addFirstWorker(Workers result, Workers workers) {
-        Worker worker = workers.popFront();
-        result.addBack(worker);
-        workers.addBack(worker);
+        result.addFirstWorker(workers);
     }
 
     private boolean isEqualsWithLastWorker(Workers result, Workers workers) {

@@ -23,6 +23,12 @@ public class Workers {
         return new Workers(deque);
     }
 
+    public void addFirstWorker(Workers source) {
+        Worker front = source.popFront();
+        workers.addLast(front);
+        source.addBack(front);
+    }
+
     /**
      * 제일 앞에 있는 요소를 반환하는 메서드
      */
