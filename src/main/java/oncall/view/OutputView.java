@@ -13,6 +13,7 @@ import oncall.view.console.ConsoleWriter;
 public class OutputView {
     private static final String MONTH = "월";
     private static final String DAY = "일";
+    private static final String HOLIDAY = "(공휴일)";
 
     public void printResult(Month month, DayOfWeek startDayOfWeek, Workers result) {
         for (int day = 1; day <= month.minLength(); day++) {
@@ -38,7 +39,7 @@ public class OutputView {
         String message = dayOfweek.getDisplayName(TextStyle.FULL, Locale.KOREAN)
                 .substring(0, 1);
         if (Holiday.isHoliday(month, day) && !CustomDayOfWeek.isWeekend(dayOfweek)) {
-            message += "(휴일)";
+            message += HOLIDAY;
         }
         return message;
     }
