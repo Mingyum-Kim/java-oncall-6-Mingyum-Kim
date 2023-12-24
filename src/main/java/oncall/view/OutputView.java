@@ -13,7 +13,7 @@ import oncall.view.console.ConsoleWriter;
 public class OutputView {
     private static final String MONTH = "월";
     private static final String DAY = "일";
-    private static final String HOLIDAY = "(공휴일)";
+    private static final String HOLIDAY = "(휴일)";
 
     public void printResult(Month month, DayOfWeek startDayOfWeek, Workers result) {
         for (int day = 1; day <= month.minLength(); day++) {
